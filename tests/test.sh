@@ -9,9 +9,11 @@
 ## Description :
 ## --
 ## Created : <2017-08-15>
-## Updated: Time-stamp: <2017-08-15 22:37:17>
+## Updated: Time-stamp: <2017-08-16 11:48:14>
 ##-------------------------------------------------------------------
 cd ..
+
+python ./python-hosts-tool.py --action add --add_hosts_file ./tests/test_hosts --dry_run
 
 # Update /etc/hosts by adding hosts binding
 python ./python-hosts-tool.py --action add --add_hosts_file ./tests/test_hosts

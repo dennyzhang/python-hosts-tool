@@ -27,7 +27,8 @@ git clone git@github.com:DennyZhang/python-hosts-tool.git
 ##        python ./python-hosts-tool.py --action examine --examine_hosts_file ./tests/test_hosts
 ```
 # todo items
-** TODO Send PR for safe delete to python-hosts
+
+- Send PR for safe delete to python-hosts
 https://github.com/jonhadfield/python-hosts
 
 https://pypi.python.org/pypi/python-hosts/0.3.7

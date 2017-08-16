@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-15 23:17:17>
+## Updated: Time-stamp: <2017-08-15 23:19:24>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -25,6 +25,7 @@
 import os, sys
 import argparse
 import socket, datetime
+
 from shutil import copyfile
 from python_hosts import Hosts, HostsEntry
 
@@ -115,6 +116,7 @@ def remove_hosts(hosts_origin, hosts_extra):
         elif len(l) == 1:
             if is_equal(l[0], entry) is True:
                 has_changed = True
+                logging.info("Remove entry: %s" % (entry))
                 hosts_origin.remove_all_matching(address=entry.address)
             else:
                 print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
@@ -130,6 +132,8 @@ def examine_hosts(hosts_origin, hosts_extra):
     extra_entries = hosts_extra.entries
     unexpected_entries = []
     skip_list = ["localhost", "127.0.0.1", "255.255.255.255"]
+    # Get current hostname
+    skip_list.append(socket.gethostname())
     for entry in origin_entries:
         if entry.entry_type in ['comment', 'blank']:
             continue
@@ -176,10 +180,6 @@ if __name__ == '__main__':
                         help="Remove extra hosts from /etc/hosts", type=str)
     parser.add_argument('--examine_hosts_file', required=False, default="", \
                         help="Detect unexpected binding in /etc/hosts", type=str)
-
-    parser.add_argument('--skip_current_hostname', required=False, dest='skip_current_hostname', \
-                        action='store_true', default=False, \
-                        help="Skip any actions related to current hostname")
 
     l = parser.parse_args()
     action = l.action

@@ -11,8 +11,8 @@ git clone git@github.com:DennyZhang/python-hosts-tool.git
 ```
 
 # Principle:
-- Be safe: When remove, make sure it's an exact match; When add, make sure no conflicts
-- Can audit: backup old version, if we have changed it
+- **Be safe**: When remove, make sure it's an exact match; When add, make sure no conflicts
+- **Can audit**: backup old version, if we have changed it
 
 # How to Use
 

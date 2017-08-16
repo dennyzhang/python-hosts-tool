@@ -11,6 +11,7 @@ git clone git@github.com:DennyZhang/python-hosts-tool.git
 - Be safe: When remove, make sure it's an exact match; When add, make sure no conflicts
 - Can audit: backup old version, if we have changed it
 * How to Use
+
 ```
 ##        # Add a list of new hosts entries
 ##        python ./python-hosts-tool.py --action add --add_hosts_file ./tests/test_hosts

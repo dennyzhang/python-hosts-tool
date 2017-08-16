@@ -7,6 +7,11 @@ Read more: https://www.dennyzhang.com/hostsfile_issues/
 
 ```
 pip install python-hosts==0.3.7
+# get the tool
+wget -O python-hosts-tool.py \
+    https://raw.githubusercontent.com/DennyZhang/python-hosts-tool/master/python-hosts-tool.py
+
+# Or git clone
 git clone git@github.com:DennyZhang/python-hosts-tool.git
 ```
 

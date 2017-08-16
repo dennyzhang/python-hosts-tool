@@ -1,7 +1,7 @@
 # python-hosts-tool
 Manage /etc/hosts in an organized way by Python
 
-Read more: https://www.dennyzhang.com/hostsfile_issues/
+Read more: https://www.dennyzhang.com/hostsfile_issues
 
 # How to Install
 

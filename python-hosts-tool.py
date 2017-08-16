@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-15 19:43:16>
+## Updated: Time-stamp: <2017-08-15 22:39:04>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -166,9 +166,6 @@ if __name__ == '__main__':
     hosts_origin = Hosts(path='/etc/hosts')
     hosts_extra = Hosts(path=extra_hosts_file)
 
-    if action == 'add':
-        add_hosts(hosts_origin, hosts_extra)
-
-    if action == 'remove':
-        remove_hosts(hosts_origin, hosts_extra)
+    fun_name = eval("%s_hosts" % (action))
+    fun_name(hosts_origin, hosts_extra)
 ## File : python-hosts-tool.py ends

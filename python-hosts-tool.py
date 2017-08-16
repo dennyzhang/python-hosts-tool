@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-15 19:15:08>
+## Updated: Time-stamp: <2017-08-15 19:36:40>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -39,6 +39,9 @@ logging.getLogger().addHandler(logging.StreamHandler())
 
 ################################################################################
 # TODO: create PR
+def is_equal(entry1, entry2):
+    return str(entry1) == str(entry2)
+
 def get_hosts_entries(hosts, address=None, names=None):
     l = []
     for entry in hosts.entries:
@@ -60,27 +63,40 @@ def backup_file_with_timestamp(filepath):
     # Sample: /etc/hosts -> /etc/hosts.2017-08-15_182230
     backup_file = "%s.%s" % (filepath, \
                              datetime.datetime.utcnow().strftime("%Y-%m-%d_%H%M%S"))
+    logging.info("Backup %s to %s" % (filepath, backup_file))
     # TODO: add error handling
     copyfile(filepath, backup_file)
 
 ################################################################################
+def save_change(hosts, has_changed):
+    if has_changed is True:
+        backup_file_with_timestamp("/etc/hosts")
+        hosts.write()
+    else:
+        logging.info("OK: no changes has happened. Skip updating /etc/hosts")
+
 def add_hosts(hosts_origin, hosts_extra):
     origin_entries = hosts_origin.entries
     extra_entries = hosts_extra.entries
+    has_changed = False
     for entry in extra_entries:
         if entry.entry_type == 'comment':
             continue
 
         l = get_hosts_entries(hosts_origin, address=entry.address, names=entry.names)
         if len(l) == 0:
-            hosts_origin.append(entry)
+            has_changed = True
+            logging.info("Add entry: %s" % (entry))
+            hosts_origin.add([entry])
         elif len(l) == 1:
-            if l[0] == entry:
+            if is_equal(l[0], entry) is True:
                 continue
             else:
+                print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
                 logging.error("Conflict: Fail to add %s" % (entry))
         else:
             logging.error("Original hosts file has duplicate entries")
+    save_change(hosts_origin, has_changed)
 
 if __name__ == '__main__':
     # get parameters from users
@@ -100,6 +116,9 @@ if __name__ == '__main__':
 
     l = parser.parse_args()
     action = l.action
+    add_hosts_file = l.add_hosts_file
+    remove_hosts_file = l.remove_hosts_file
+    examine_hosts_file = l.examine_hosts_file
 
     # Convert a string to preexisting variable names
     # When action is add, extra_host_file points to add_hosts_file

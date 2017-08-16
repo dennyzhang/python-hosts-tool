@@ -1,4 +1,3 @@
--*- mode:org; fill-column:70; coding:utf-8; -*-
 # python-hosts-tool
 Manage /etc/hosts in an organized way by Python
 

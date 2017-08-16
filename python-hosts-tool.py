@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-15 19:36:40>
+## Updated: Time-stamp: <2017-08-15 19:37:12>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -38,10 +38,11 @@ logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s 
 logging.getLogger().addHandler(logging.StreamHandler())
 
 ################################################################################
-# TODO: create PR
+# TODO: create PR to https://github.com/jonhadfield/python-hosts
 def is_equal(entry1, entry2):
     return str(entry1) == str(entry2)
 
+# TODO: create PR to https://github.com/jonhadfield/python-hosts
 def get_hosts_entries(hosts, address=None, names=None):
     l = []
     for entry in hosts.entries:

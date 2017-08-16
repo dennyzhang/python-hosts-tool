@@ -20,7 +20,7 @@ git clone git@github.com:DennyZhang/python-hosts-tool.git
 - **Can audit**: backup old version, if we have changed it
 
 # How to Use
-- Sample content of ./tests/test_hosts
+- Sample content of [./tests/test_hosts](./tests/test_hosts)
 ```
 cat ./tests/test_hosts
 45.33.87.75 www.dennytest.com

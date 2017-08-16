@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-15 22:57:54>
+## Updated: Time-stamp: <2017-08-15 23:17:17>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -82,7 +82,7 @@ def add_hosts(hosts_origin, hosts_extra):
     extra_entries = hosts_extra.entries
     has_changed = False
     for entry in extra_entries:
-        if entry.entry_type == 'comment':
+        if entry.entry_type in ['comment', 'blank']:
             continue
 
         l = get_hosts_entries(hosts_origin, address=entry.address, names=entry.names)
@@ -96,8 +96,10 @@ def add_hosts(hosts_origin, hosts_extra):
             else:
                 print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
                 logging.error("Conflict: Fail to add %s" % (entry))
+                sys.exit(1)
         else:
             logging.error("Original hosts file has duplicate entries")
+            sys.exit(1)
     save_change(hosts_origin, has_changed)
 
 def remove_hosts(hosts_origin, hosts_extra):
@@ -105,7 +107,7 @@ def remove_hosts(hosts_origin, hosts_extra):
     extra_entries = hosts_extra.entries
     has_changed = False
     for entry in extra_entries:
-        if entry.entry_type == 'comment':
+        if entry.entry_type in ['comment', 'blank']:
             continue
         l = get_hosts_entries(hosts_origin, address=entry.address, names=entry.names)
         if len(l) == 0:
@@ -117,29 +119,51 @@ def remove_hosts(hosts_origin, hosts_extra):
             else:
                 print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
                 logging.error("Conflict: Fail to remove %s" % (entry))
+                sys.exit(1)
         else:
             logging.error("Original hosts file has duplicate entries")
+            sys.exit(1)
     save_change(hosts_origin, has_changed)
 
 def examine_hosts(hosts_origin, hosts_extra):
     origin_entries = hosts_origin.entries
     extra_entries = hosts_extra.entries
-    has_changed = False
-    for entry in extra_entries:
-        if entry.entry_type == 'comment':
+    unexpected_entries = []
+    skip_list = ["localhost", "127.0.0.1", "255.255.255.255"]
+    for entry in origin_entries:
+        if entry.entry_type in ['comment', 'blank']:
             continue
-        l = get_hosts_entries(hosts_origin, address=entry.address, names=entry.names)
+
+        if entry.address in skip_list:
+            continue
+
+        has_matched = False
+        for name in entry.names:
+            if name in skip_list:
+                has_matched = True
+                break
+        if has_matched is True:
+            continue
+
+        l = get_hosts_entries(hosts_extra, address=entry.address, names=entry.names)
         if len(l) == 0:
-            continue
+            unexpected_entries.append(entry)
         elif len(l) == 1:
             if is_equal(l[0], entry) is True:
-                has_changed = True
-                hosts_origin.remove_all_matching(address=entry.address)
+                continue
             else:
-                print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
-                logging.error("Conflict: Fail to remove %s" % (entry))
+                logging.warning("Detect Conflict for %s" % (entry))
+                unexpected_entries.append(entry)
         else:
             logging.error("Original hosts file has duplicate entries")
+            sys.exit(1)
+    if len(unexpected_entries) != 0:
+        func = lambda entry: str(entry)
+        logging.error("Unexpected binding in your hosts file: \n%s" % "\n".join(map(func, unexpected_entries)))
+        sys.exit(1)
+    else:
+        logging.info("OK: no unexpected binding in your hosts file")
+
 
 if __name__ == '__main__':
     # get parameters from users

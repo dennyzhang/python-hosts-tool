@@ -26,7 +26,12 @@ git clone git@github.com:DennyZhang/python-hosts-tool.git
 ##        # Examine hosts file, and detect unexpected changes
 ##        python ./python-hosts-tool.py --action examine --examine_hosts_file ./tests/test_hosts
 ```
-# todo items
+# How To Run test
+```
+cd tests
+sudo bash -ex ./test.sh
+```
+# TODO items
 
 - Send PR for safe delete to python-hosts
 https://github.com/jonhadfield/python-hosts

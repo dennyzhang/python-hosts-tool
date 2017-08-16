@@ -15,7 +15,14 @@ git clone git@github.com:DennyZhang/python-hosts-tool.git
 - **Can audit**: backup old version, if we have changed it
 
 # How to Use
+- Sample content of ./tests/test_hosts
+```
+cat ./tests/test_hosts
+45.33.87.75 www.dennytest.com
+104.236.158.226 repo.dennytest.com
+```
 
+- Run Commands
 ```
 ##        # Add a list of new hosts entries
 ##        python ./python-hosts-tool.py --action add --add_hosts_file ./tests/test_hosts

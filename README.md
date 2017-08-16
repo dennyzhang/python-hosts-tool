@@ -38,9 +38,10 @@ cat ./tests/test_hosts
 cd tests
 sudo bash -ex ./test.sh
 ```
-# TODO items
+# TODO Items
 
 - Send PR for safe delete to python-hosts
+
 https://github.com/jonhadfield/python-hosts
 
 https://pypi.python.org/pypi/python-hosts/0.3.7

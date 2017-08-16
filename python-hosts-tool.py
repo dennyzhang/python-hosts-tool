@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-15 19:37:12>
+## Updated: Time-stamp: <2017-08-15 19:43:16>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -76,6 +76,7 @@ def save_change(hosts, has_changed):
     else:
         logging.info("OK: no changes has happened. Skip updating /etc/hosts")
 
+
 def add_hosts(hosts_origin, hosts_extra):
     origin_entries = hosts_origin.entries
     extra_entries = hosts_extra.entries
@@ -95,6 +96,31 @@ def add_hosts(hosts_origin, hosts_extra):
             else:
                 print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
                 logging.error("Conflict: Fail to add %s" % (entry))
+        else:
+            logging.error("Original hosts file has duplicate entries")
+    save_change(hosts_origin, has_changed)
+
+def remove_hosts(hosts_origin, hosts_extra):
+    origin_entries = hosts_origin.entries
+    extra_entries = hosts_extra.entries
+    has_changed = False
+    for entry in extra_entries:
+        if entry.entry_type == 'comment':
+            continue
+
+        l = get_hosts_entries(hosts_origin, address=entry.address, names=entry.names)
+        if len(l) == 0:
+            continue
+        elif len(l) == 1:
+            if is_equal(l[0], entry) is True:
+                has_changed = True
+                print "address: %s" % (entry.address)
+                print "names: %s" % (entry.names[0])
+                print "hosts_origin: %s" % (hosts_origin)
+                hosts_origin.remove_all_matching(address=entry.address, name=entry.names)
+            else:
+                print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
+                logging.error("Conflict: Fail to remove %s" % (entry))
         else:
             logging.error("Original hosts file has duplicate entries")
     save_change(hosts_origin, has_changed)
@@ -142,4 +168,7 @@ if __name__ == '__main__':
 
     if action == 'add':
         add_hosts(hosts_origin, hosts_extra)
+
+    if action == 'remove':
+        remove_hosts(hosts_origin, hosts_extra)
 ## File : python-hosts-tool.py ends

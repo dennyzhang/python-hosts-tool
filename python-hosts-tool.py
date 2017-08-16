@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-16 16:10:15>
+## Updated: Time-stamp: <2017-08-16 16:12:45>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -105,7 +105,7 @@ def add_hosts(hosts_origin, hosts_extra, dry_run):
                 logging.error("Conflict: Fail to add %s" % (entry))
                 sys.exit(1)
         else:
-            logging.error("Original hosts file has duplicate entries: %s" % (entry))
+            logging.error("Original hosts file has duplicate entries: %s" % (l))
             sys.exit(1)
 
     save_change(hosts_origin, has_changed, dry_run)
@@ -130,7 +130,7 @@ def remove_hosts(hosts_origin, hosts_extra, dry_run):
                 logging.error("Conflict: Fail to remove %s" % (entry))
                 sys.exit(1)
         else:
-            logging.error("Original hosts file has duplicate entries: %s" % (entry))
+            logging.error("Original hosts file has duplicate entries: %s" % (l))
             sys.exit(1)
     save_change(hosts_origin, has_changed, dry_run)
 
@@ -166,7 +166,7 @@ def examine_hosts(hosts_origin, hosts_extra, dry_run):
                 logging.warning("Detect Conflict for %s" % (entry))
                 unexpected_entries.append(entry)
         else:
-            logging.error("Original hosts file has duplicate entries: %s" % (entry))
+            logging.error("Original hosts file has duplicate entries: %s" % (l))
             sys.exit(1)
     if len(unexpected_entries) != 0:
         func = lambda entry: str(entry)

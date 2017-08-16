@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-15 22:39:04>
+## Updated: Time-stamp: <2017-08-15 22:57:54>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -107,23 +107,39 @@ def remove_hosts(hosts_origin, hosts_extra):
     for entry in extra_entries:
         if entry.entry_type == 'comment':
             continue
-
         l = get_hosts_entries(hosts_origin, address=entry.address, names=entry.names)
         if len(l) == 0:
             continue
         elif len(l) == 1:
             if is_equal(l[0], entry) is True:
                 has_changed = True
-                print "address: %s" % (entry.address)
-                print "names: %s" % (entry.names[0])
-                print "hosts_origin: %s" % (hosts_origin)
-                hosts_origin.remove_all_matching(address=entry.address, name=entry.names)
+                hosts_origin.remove_all_matching(address=entry.address)
             else:
                 print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
                 logging.error("Conflict: Fail to remove %s" % (entry))
         else:
             logging.error("Original hosts file has duplicate entries")
     save_change(hosts_origin, has_changed)
+
+def examine_hosts(hosts_origin, hosts_extra):
+    origin_entries = hosts_origin.entries
+    extra_entries = hosts_extra.entries
+    has_changed = False
+    for entry in extra_entries:
+        if entry.entry_type == 'comment':
+            continue
+        l = get_hosts_entries(hosts_origin, address=entry.address, names=entry.names)
+        if len(l) == 0:
+            continue
+        elif len(l) == 1:
+            if is_equal(l[0], entry) is True:
+                has_changed = True
+                hosts_origin.remove_all_matching(address=entry.address)
+            else:
+                print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
+                logging.error("Conflict: Fail to remove %s" % (entry))
+        else:
+            logging.error("Original hosts file has duplicate entries")
 
 if __name__ == '__main__':
     # get parameters from users

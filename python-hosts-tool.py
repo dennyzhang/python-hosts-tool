@@ -7,13 +7,16 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-15 23:19:24>
+## Updated: Time-stamp: <2017-08-16 11:46:50>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
 ##        # Add a list of new hosts entries
 ##        python ./python-hosts-tool.py --action add --add_hosts_file ./tests/test_hosts
 ##
+##        # Add a list of new hosts entries in dry-run mode. No real changes
+##        python ./python-hosts-tool.py --action add --add_hosts_file ./tests/test_hosts --dry_run
+####
 ##        # Remove a list of existing hosts
 ##        python ./python-hosts-tool.py --action remove --remove_hosts_file ./tests/test_hosts
 ##
@@ -70,15 +73,18 @@ def backup_file_with_timestamp(filepath):
     copyfile(filepath, backup_file)
 
 ################################################################################
-def save_change(hosts, has_changed):
+def save_change(hosts, has_changed, dry_run):
     if has_changed is True:
-        backup_file_with_timestamp("/etc/hosts")
-        hosts.write()
+        if dry_run is True:
+            logging.info("Skip changes, since --dry_run option is enabled")
+        else:
+            backup_file_with_timestamp("/etc/hosts")
+            hosts.write()
     else:
         logging.info("OK: no changes has happened. Skip updating /etc/hosts")
 
 
-def add_hosts(hosts_origin, hosts_extra):
+def add_hosts(hosts_origin, hosts_extra, dry_run):
     origin_entries = hosts_origin.entries
     extra_entries = hosts_extra.entries
     has_changed = False
@@ -101,9 +107,10 @@ def add_hosts(hosts_origin, hosts_extra):
         else:
             logging.error("Original hosts file has duplicate entries")
             sys.exit(1)
-    save_change(hosts_origin, has_changed)
 
-def remove_hosts(hosts_origin, hosts_extra):
+    save_change(hosts_origin, has_changed, dry_run)
+        
+def remove_hosts(hosts_origin, hosts_extra, dry_run):
     origin_entries = hosts_origin.entries
     extra_entries = hosts_extra.entries
     has_changed = False
@@ -125,9 +132,9 @@ def remove_hosts(hosts_origin, hosts_extra):
         else:
             logging.error("Original hosts file has duplicate entries")
             sys.exit(1)
-    save_change(hosts_origin, has_changed)
+    save_change(hosts_origin, has_changed, dry_run)
 
-def examine_hosts(hosts_origin, hosts_extra):
+def examine_hosts(hosts_origin, hosts_extra, dry_run):
     origin_entries = hosts_origin.entries
     extra_entries = hosts_extra.entries
     unexpected_entries = []
@@ -180,9 +187,12 @@ if __name__ == '__main__':
                         help="Remove extra hosts from /etc/hosts", type=str)
     parser.add_argument('--examine_hosts_file', required=False, default="", \
                         help="Detect unexpected binding in /etc/hosts", type=str)
+    parser.add_argument('--dry_run', dest='dry_run', action='store_true', default=False, \
+                        help="Dryrun without real changes")
 
     l = parser.parse_args()
     action = l.action
+    dry_run = l.dry_run
     add_hosts_file = l.add_hosts_file
     remove_hosts_file = l.remove_hosts_file
     examine_hosts_file = l.examine_hosts_file
@@ -207,5 +217,5 @@ if __name__ == '__main__':
     hosts_extra = Hosts(path=extra_hosts_file)
 
     fun_name = eval("%s_hosts" % (action))
-    fun_name(hosts_origin, hosts_extra)
+    fun_name(hosts_origin, hosts_extra, dry_run)
 ## File : python-hosts-tool.py ends

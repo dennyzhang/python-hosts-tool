@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-16 20:59:22>
+## Updated: Time-stamp: <2017-08-16 21:18:59>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -88,6 +88,7 @@ def add_hosts(hosts_origin, hosts_extra, dry_run):
     origin_entries = hosts_origin.entries
     extra_entries = hosts_extra.entries
     has_changed = False
+    current_hostname = socket.gethostname()
     for entry in extra_entries:
         if entry.entry_type in ['comment', 'blank']:
             continue
@@ -101,9 +102,12 @@ def add_hosts(hosts_origin, hosts_extra, dry_run):
             if is_equal(l[0], entry) is True:
                 continue
             else:
-                print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
-                logging.error("Conflict: Fail to add %s" % (entry))
-                sys.exit(1)
+                if current_hostname in entry.names:
+                    hosts_origin.add([entry])
+                else:
+                    print("not equal: l[0]: %s, entry: %s" % (l[0], entry))
+                    logging.error("Conflict: Fail to add %s" % (entry))
+                    sys.exit(1)
         else:
             logging.error("Original hosts file has duplicate entries. entry: %s,\nmatched:%s" \
                           % (entry, l))

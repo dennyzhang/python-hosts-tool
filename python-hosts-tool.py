@@ -7,7 +7,7 @@
 ## File : python-hosts-tool.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-16 16:25:01>
+## Updated: Time-stamp: <2017-08-16 20:59:22>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -140,7 +140,7 @@ def examine_hosts(hosts_origin, hosts_extra, dry_run):
     origin_entries = hosts_origin.entries
     extra_entries = hosts_extra.entries
     unexpected_entries = []
-    skip_list = ["localhost", "127.0.0.1", "255.255.255.255"]
+    skip_list = ["localhost", "127.0.0.1", "255.255.255.255", "127.0.1.1"]
     skip_list += ["ip6-localnet", "ip6-mcastprefix", "ip6-allnodes", "ip6-allrouters", "ip6-allhosts", "ip6-localhost"]
     # Get current hostname
     skip_list.append(socket.gethostname())

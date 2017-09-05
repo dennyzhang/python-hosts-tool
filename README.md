@@ -1,3 +1,5 @@
+Travis CI Status: [![Build Status](https://travis-ci.org/DennyZhang/python-hosts-tool.svg?branch=master)](https://travis-ci.org/DennyZhang/python-hosts-tool)
+
 # python-hosts-tool
 Manage /etc/hosts in an organized way by Python
 

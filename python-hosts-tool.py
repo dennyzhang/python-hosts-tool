@@ -5,9 +5,9 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : python-hosts-tool.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-17 17:01:52>
+## Updated: Time-stamp: <2017-09-04 18:52:02>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:

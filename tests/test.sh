@@ -5,11 +5,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : test.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2017-08-15>
-## Updated: Time-stamp: <2017-08-16 11:48:14>
+## Updated: Time-stamp: <2017-09-04 18:52:17>
 ##-------------------------------------------------------------------
 cd ..
 

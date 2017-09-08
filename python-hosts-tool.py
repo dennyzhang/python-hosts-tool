@@ -2,12 +2,12 @@
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://www.dennyzhang.com/wp-content/mit_license.txt
 ##
 ## File : python-hosts-tool.py
 ## Author : Denny <contact@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-09-04 18:52:02>
+## Updated: Time-stamp: <2017-09-07 21:35:00>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:

@@ -54,6 +54,4 @@ https://github.com/jonhadfield/python-hosts
 
 https://pypi.python.org/pypi/python-hosts/0.3.7
 
-Discuss with Denny in [LinkedIn](https://www.linkedin.com/in/dennyzhang001) or [Blog](https://www.dennyzhang.com).
-
 Code is licensed under [MIT License](https://www.dennyzhang.com/wp-content/mit_license.txt).

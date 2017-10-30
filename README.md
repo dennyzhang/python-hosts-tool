@@ -17,14 +17,14 @@ Read more: https://www.dennyzhang.com/audit_hostsfile
 
 # Online Usage
 ```
+##        # Examine hosts file, and detect unexpected changes
+##        python ./python-hosts-tool.py --action examine --examine_hosts_file ./tests/test_hosts
+##
 ##        # Add a list of new hosts entries
 ##        python ./python-hosts-tool.py --action add --add_hosts_file ./tests/test_hosts
 ##
 ##        # Remove a list of existing hosts
 ##        python ./python-hosts-tool.py --action remove --remove_hosts_file ./tests/test_hosts
-##
-##        # Examine hosts file, and detect unexpected changes
-##        python ./python-hosts-tool.py --action examine --examine_hosts_file ./tests/test_hosts
 ```
 
 # How to Install

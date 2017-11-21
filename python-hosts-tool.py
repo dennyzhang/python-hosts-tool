@@ -5,9 +5,9 @@
 ##   https://www.dennyzhang.com/wp-content/mit_license.txt
 ##
 ## File : python-hosts-tool.py
-## Author : Denny <contact@dennyzhang.com>
+## Author : Denny <https://www.dennyzhang.com/contact>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-09-07 21:35:00>
+## Updated: Time-stamp: <2017-11-13 11:00:52>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:

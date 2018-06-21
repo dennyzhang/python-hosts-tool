@@ -4,6 +4,6 @@ python:
 # command to install dependencies
 install:
   - pip install python_hosts==0.4.0
-  - pip install nose pylint
+  - pip install nose pylint requests
 # command to run tests
 script: find . -name "*.py" | xargs pylint -E
